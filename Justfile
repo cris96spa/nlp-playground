@@ -14,7 +14,7 @@ format:
 
 lint:
 	uv run ruff check --fix
-	uv run mypy --ignore-missing-imports --install-types --non-interactive --package python_repo_template
+	uv run mypy --ignore-missing-imports --install-types --non-interactive --package nlp_playground
 
 test:
 	uv run pytest --verbose --color=yes tests
@@ -24,7 +24,5 @@ validate: format lint test
 dockerize:
 	docker build -t python-repo-template .
 
-# Use it like:
-# just run 10
-run number:
-	uv run main.py --number {{number}}
+download-model:
+	uv run spacy download en_core_web_sm

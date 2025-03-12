@@ -16,3 +16,4 @@ wheels/
 # This should be removed when the template is actually being used
 uv.lock 
 
+data/*

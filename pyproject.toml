@@ -1,19 +1,51 @@
 [project]
-name = "python-repo-template"
+name = "nlp_playground"
 version = "0.1.0"
-description = "A template for Python projects"
+description = "NLP playground"
 readme = "README.md"
 license = { text = "MIT" }
-authors = [ { name = "Giovanni Giacometti", email = "giovanni.giacometti5@gmail.com" } ]
+authors = [
+    { name = "Cristian Spagnuolo", email = "cristian.c.spagnuolo@gmail.com" },
+]
 requires-python = ">=3.12"
 dependencies = [
+    "graphviz>=0.20.3",
     "loguru>=0.7.3",
+    "matplotlib>=3.10.1",
+    "micrograd>=0.1.0",
+    "pip>=25.0.1",
+    "polars>=1.23.0",
+    "setuptools>=75.8.1",
+    "tqdm>=4.67.1",
+    "wheel>=0.45.1",
+]
+
+[project.optional-dependencies]
+
+torch = [
+    "torch==2.6.0+cu124 ; platform_system == 'Windows'",
+    "torch==2.6.0 ; platform_system != 'Windows'",
+    "torchvision==0.21.0+cu124 ; platform_system == 'Windows'",
+    "torchvision==0.21.0 ; platform_system != 'Windows'",
 ]
 
 [dependency-groups]
 dev = [
     "mypy>=1.15.0",
-    "pre-commit>=4.1.0",
+    "jupyter>=1.1.1",
+    "ipykernel>=6.29.5",
     "pytest>=8.3.4",
-    "ruff>=0.9.5",
+    "pytest-cov>=6.0.0",
+    "pytest-mock>=3.14.0",
+    "pytest-asyncio>=0.25.3",
+    "ruff>=0.9.6",
 ]
+
+[tool.uv.sources]
+torch = { index = "pytorch-gpu", marker = "platform_system == 'Windows'" }
+torchvision = { index = "pytorch-gpu", marker = "platform_system == 'Windows'" }
+
+[[tool.uv.index]]
+name = "pytorch-gpu"
+url = "https://download.pytorch.org/whl/cu124"
+explicit = true
