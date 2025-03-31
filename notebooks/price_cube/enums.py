@@ -46,26 +46,57 @@ class Category(BaseEnum):
 
 class Column(BaseEnum):
     """
-    Enum class representing various column names used in the price cube dataset.
+    Column is an enumeration that defines various column names used in a dataset
+    or table related to pricing and product information. Each attribute represents
+    a specific column name as a string.
+
     Attributes:
-        SKU (str): Represents the stock keeping unit identifier.
-        UNIT_COST (str): Represents the unit cost of a product.
-        CURRENT_PRICE (str): Represents the current price of a product.
-        SUGGESTED_PRICE (str): Represents the suggested price of a product.
-        PRODUCT_CATEGORY (str): Represents the category to which a product belongs.
-        ELASTICITY (str): Represents the price elasticity of a product.
-        DATE (str): Represents the date associated with the data entry.
-        PRODUCT_NAME (str): Represents the name of a product.
-        PRODUCT_DESCRIPTION (str): Represents the description of a product.
+        SKU (str): The stock keeping unit identifier for a product.
+        UNIT_COST (str): The cost of a single unit of the product.
+        CURRENT_PRICE (str): The current price of the product.
+        SUGGESTED_PRICE (str): The suggested price for the product.
+        PRODUCT_CATEGORY (str): The category to which the product belongs.
+        DATE (str): The date associated with the data entry.
+        PRODUCT_NAME (str): The name of the product.
+        PRODUCT_DESCRIPTION (str): A description of the product.
+        UNITS_SOLD (str): The number of units sold.
+        MIN_PRICE (str): The minimum price of the product.
+        MAX_PRICE (str): The maximum price of the product.
+        EXPECTED_VOLUME (str): The expected sales volume.
+        GLOBAL_OPTIMAL_PRICE (str): The globally optimal price for the product.
+        CURRENT_MARGIN_PERCENTAGE (str): The current profit margin percentage.
+        SUGGESTED_MARGIN_PERCENTAGE (str): The suggested profit margin percentage.
+        CURRENT_REVENUE (str): The current revenue generated.
+        EXPECTED_REVENUE (str): The expected revenue based on suggested pricing.
     """
 
     SKU = "sku"
-    UNIT_COST = "unit_cost"
-    CURRENT_PRICE = "current_price"
-    SUGGESTED_PRICE = "suggested_price"
-    PRODUCT_CATEGORY = "product_category"
-    ELASTICITY = "elasticity"
     DATE = "date"
     PRODUCT_NAME = "product_name"
     PRODUCT_DESCRIPTION = "product_description"
+    UNIT_COST = "unit_cost"
+    PRODUCT_CATEGORY = "product_category"
+
+    MIN_PRICE = "min_price"
+    MAX_PRICE = "max_price"
+    CURRENT_PRICE = "current_price"
+    SUGGESTED_PRICE = "suggested_price"
+
+    GLOBAL_OPTIMAL_PRICE = "global_optimal_price"
+
     UNITS_SOLD = "units_sold"
+    EXPECTED_UNITS_SOLD = "expected_units_sold"
+
+    CURRENT_MARGIN_PERCENTAGE = "current_margin_percentage"
+    SUGGESTED_MARGIN_PERCENTAGE = "suggested_margin_percentage"
+    OPTIMAL_MARGIN_PERCENTAGE = "optimal_margin_percentage"
+
+    CURRENT_REVENUE = "current_revenue"
+    EXPECTED_REVENUE_CURRENT_VOLUME = "expected_revenue_current_volume"
+    EXPECTED_REVENUE_EXPECTED_VOLUME = "expected_revenue_expected_volume"
+    OPTIMAL_REVENUE = "optimal_revenue"
+
+    CURRENT_NET_MARGIN = "current_net_margin"
+    EXPECTED_NET_MARGIN_CURRENT_VOLUME = "expected_net_margin_current_volume"
+    EXPECTED_NET_MARGIN_EXPECTED_VOLUME = "expected_net_margin_expected_volume"
+    OPTIMAL_NET_MARGIN = "optimal_net_margin"

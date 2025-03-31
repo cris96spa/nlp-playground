@@ -11,14 +11,6 @@ CATEGORIES = {
 SEED = 42
 N_ROWS = 10000
 
-ELASTICITY = {
-    Category.ELECTRONICS.value: -2.0,
-    Category.APPAREL.value: -1.5,
-    Category.HOME_KITCHEN.value: -1.5,
-    Category.SPORTS_OUTDOORS.value: -1.3,
-    Category.BEAUTY_HEALTH.value: -0.8,
-}
-
 PRODUCT_CATALOG = {
     Category.ELECTRONICS.value: [
         (
@@ -112,9 +104,9 @@ PRODUCT_PRICE_RANGES = {
     "ELEC001": (80.0, 120.0),  # Wireless Headphones
     "ELEC002": (300.0, 450.0),  # Smartphone
     "ELEC003": (100.0, 180.0),  # Smartwatch
-    "APP001": (20.0, 40.0),  # Denim Jeans
-    "APP002": (50.0, 90.0),  # Winter Jacket
-    "APP003": (30.0, 60.0),  # Running Shoes
+    "APP001": (20.0, 70.0),  # Denim Jeans
+    "APP002": (50.0, 110.0),  # Winter Jacket
+    "APP003": (45.0, 90.0),  # Running Shoes
     "HOME001": (40.0, 80.0),  # Blender
     "HOME002": (60.0, 120.0),  # Air Fryer
     "HOME003": (50.0, 100.0),  # Cookware Set
@@ -124,4 +116,58 @@ PRODUCT_PRICE_RANGES = {
     "BEAU001": (8.0, 15.0),  # Facial Cleanser
     "BEAU002": (20.0, 40.0),  # Hair Dryer
     "BEAU003": (30.0, 60.0),  # Electric Toothbrush
+}
+
+PRODUCT_COSTS = {
+    "ELEC001": 81.0,  # Wireless Headphones
+    "ELEC002": 290.0,  # Smartphone
+    "ELEC003": 90.0,  # Smartwatch
+    "APP001": 19.0,  # Denim Jeans
+    "APP002": 51.0,  # Winter Jacket
+    "APP003": 42.0,  # Running Shoes
+    "HOME001": 38.12,  # Blender
+    "HOME002": 55.0,  # Air Fryer
+    "HOME003": 52.0,  # Cookware Set
+    "SPORT001": 18.0,  # Yoga Mat
+    "SPORT002": 36.2,  # Dumbbell Set
+    "SPORT003": 69.0,  # Camping Tent
+    "BEAU001": 8.1,  # Facial Cleanser
+    "BEAU002": 12,  # Hair Dryer
+    "BEAU003": 27.50,  # Electric Toothbrush
+}
+
+MAX_UNITS_SOLD = {
+    "ELEC001": 150,  # Wireless Headphones
+    "ELEC002": 300,  # Smartphone
+    "ELEC003": 120,  # Smartwatch
+    "APP001": 200,  # Denim Jeans
+    "APP002": 100,  # Winter Jacket
+    "APP003": 250,  # Running Shoes
+    "HOME001": 80,  # Blender
+    "HOME002": 100,  # Air Fryer
+    "HOME003": 60,  # Cookware Set
+    "SPORT001": 180,  # Yoga Mat
+    "SPORT002": 90,  # Dumbbell Set
+    "SPORT003": 40,  # Camping Tent
+    "BEAU001": 200,  # Facial Cleanser
+    "BEAU002": 70,  # Hair Dryer
+    "BEAU003": 110,  # Electric Toothbrush
+}
+
+PRODUCT_PRICE_RANGES_CONSTRAINTS = {
+    "ELEC001": (80.0, 120.0),  # Wireless Headphones
+    "ELEC002": (300.0, 450.0),  # Smartphone
+    "ELEC003": (100.0, 180.0),  # Smartwatch
+    "APP001": (25.0, 70.0),  # Denim Jeans
+    "APP002": (50.5, 110.0),  # Winter Jacket
+    "APP003": (45.99, 90.0),  # Running Shoes
+    "HOME001": (41.0, 80.0),  # Blender
+    "HOME002": (60.4, 120.0),  # Air Fryer
+    "HOME003": (50.0, 100.0),  # Cookware Set
+    "SPORT001": (20.0, 35.0),  # Yoga Mat
+    "SPORT002": (30.0, 90.0),  # Dumbbell Set
+    "SPORT003": (67.0, 130.0),  # Camping Tent
+    "BEAU001": (7.0, 15.0),  # Facial Cleanser
+    "BEAU002": (23.45, 40.0),  # Hair Dryer
+    "BEAU003": (30.2, 60.0),  # Electric Toothbrush
 }
