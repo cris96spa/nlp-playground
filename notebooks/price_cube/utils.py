@@ -187,7 +187,7 @@ def build_product_dict(product_list: list) -> dict[str, Any]:
     return product_dict
 
 
-def derive_volume_metrics(df: pl.DataFrame) -> pl.DataFrame:
+def derive_volume_metrics(df: pl.DataFrame, _round: bool = False) -> pl.DataFrame:
     """
     Generate volume-related metrics for products in a given DataFrame.
     This function calculates various metrics such as units sold, expected volume,
@@ -220,11 +220,12 @@ def derive_volume_metrics(df: pl.DataFrame) -> pl.DataFrame:
 
     units_sold_list = []
     expected_units_sold_list = []
+    optimal_units_sold_list = []
     min_price_list = []
     max_price_list = []
     suggested_price_list = []
     global_optimal_price_list = []
-
+    current_prices_list = []
     for product_id in df[Column.SKU.value].unique().sort().to_numpy():
         # Filter products by SKU
         print(f"Product ID: {product_id}")
@@ -247,15 +248,7 @@ def derive_volume_metrics(df: pl.DataFrame) -> pl.DataFrame:
         p0 = np.median(current_prices)
 
         # Compute expected units sold using logistic decay
-        expected_units_sold = logistic_decay(current_prices, L=L, k=k, p0=p0)
-
-        # Introduce noise to simulate real-world variability
-        noise_strength = 0.03 * L
-        noise_mean = -0.09 * L
-        units_sold = expected_units_sold + np.random.normal(
-            noise_mean, noise_strength, size=expected_units_sold.shape
-        )
-        units_sold = np.round(np.clip(units_sold, 1, None))
+        units_sold = logistic_decay(current_prices, L=L, k=k, p0=p0)
 
         # Get the optimal price
         price_bounds = PRODUCT_PRICE_RANGES_CONSTRAINTS[product_id]
@@ -268,13 +261,27 @@ def derive_volume_metrics(df: pl.DataFrame) -> pl.DataFrame:
             price_bounds=(np.min(current_prices), np.max(current_prices)),
         )
 
+        expected_units_sold = logistic_decay(suggested_price, L=L, k=k, p0=p0)
+        optimal_units_sold = logistic_decay(global_optimal_price, L=L, k=k, p0=p0)
+
+        if _round:
+            units_sold = np.round(units_sold)
+            expected_units_sold = np.round(expected_units_sold)
+            optimal_units_sold = np.round(optimal_units_sold)
+
         # Save results of current product
         units_sold_list.extend(units_sold.tolist())
-        expected_units_sold_list.extend(expected_units_sold.tolist())
+        expected_units_sold_list.extend(
+            np.repeat(expected_units_sold, len(units_sold)).tolist()
+        )
+        optimal_units_sold_list.extend(
+            np.repeat(optimal_units_sold, len(units_sold)).tolist()
+        )
         min_price_list.extend([price_bounds[0]] * len(units_sold))
         max_price_list.extend([price_bounds[1]] * len(units_sold))
         suggested_price_list.extend([suggested_price] * len(units_sold))
         global_optimal_price_list.extend([global_optimal_price] * len(units_sold))
+        current_prices_list.extend(current_prices.tolist())
 
     return df.sort([Column.SKU.value, Column.CURRENT_PRICE.value]).with_columns(
         [
@@ -283,6 +290,9 @@ def derive_volume_metrics(df: pl.DataFrame) -> pl.DataFrame:
             ),
             pl.Series(Column.EXPECTED_UNITS_SOLD.value, expected_units_sold_list).alias(
                 Column.EXPECTED_UNITS_SOLD.value
+            ),
+            pl.Series(Column.OPTIMAL_UNITS_SOLD.value, optimal_units_sold_list).alias(
+                Column.OPTIMAL_UNITS_SOLD.value
             ),
             pl.Series(Column.MIN_PRICE.value, min_price_list).alias(
                 Column.MIN_PRICE.value
@@ -296,6 +306,9 @@ def derive_volume_metrics(df: pl.DataFrame) -> pl.DataFrame:
             pl.Series(
                 Column.GLOBAL_OPTIMAL_PRICE.value, global_optimal_price_list
             ).alias(Column.GLOBAL_OPTIMAL_PRICE.value),
+            pl.Series(Column.CURRENT_PRICE.value, current_prices_list).alias(
+                Column.CURRENT_PRICE.value
+            ),
         ]
     )
 
@@ -334,12 +347,8 @@ def derive_margin_metrics(df: pl.DataFrame) -> pl.DataFrame:
             ).alias(Column.OPTIMAL_MARGIN_PERCENTAGE.value),
             (
                 (pl.col(Column.CURRENT_PRICE.value) - pl.col(Column.UNIT_COST.value))
-                * pl.col(Column.EXPECTED_UNITS_SOLD.value)
+                * pl.col(Column.UNITS_SOLD.value)
             ).alias(Column.CURRENT_NET_MARGIN.value),
-            # (
-            #     (pl.col(Column.SUGGESTED_PRICE.value) - pl.col(Column.UNIT_COST.value))
-            #     * pl.col(Column.UNITS_SOLD.value)
-            # ).alias(Column.EXPECTED_NET_MARGIN_CURRENT_VOLUME.value),
             (
                 (pl.col(Column.SUGGESTED_PRICE.value) - pl.col(Column.UNIT_COST.value))
                 * pl.col(Column.EXPECTED_UNITS_SOLD.value)
@@ -349,7 +358,7 @@ def derive_margin_metrics(df: pl.DataFrame) -> pl.DataFrame:
                     pl.col(Column.GLOBAL_OPTIMAL_PRICE.value)
                     - pl.col(Column.UNIT_COST.value)
                 )
-                * pl.col(Column.EXPECTED_UNITS_SOLD.value)
+                * pl.col(Column.OPTIMAL_UNITS_SOLD.value)
             ).alias(Column.OPTIMAL_NET_MARGIN.value),
         ]
     )
@@ -380,25 +389,21 @@ def derive_revenue_metrics(df: pl.DataFrame) -> pl.DataFrame:
     return df.with_columns(
         [
             (
-                pl.col(Column.CURRENT_PRICE.value)
-                * pl.col(Column.EXPECTED_UNITS_SOLD.value)
+                pl.col(Column.CURRENT_PRICE.value) * pl.col(Column.UNITS_SOLD.value)
             ).alias(Column.CURRENT_REVENUE.value),
-            # (
-            #     pl.col(Column.SUGGESTED_PRICE.value) * pl.col(Column.UNITS_SOLD.value)
-            # ).alias(Column.EXPECTED_REVENUE_CURRENT_VOLUME.value),
             (
                 pl.col(Column.SUGGESTED_PRICE.value)
                 * pl.col(Column.EXPECTED_UNITS_SOLD.value)
             ).alias(Column.EXPECTED_REVENUE_EXPECTED_VOLUME.value),
             (
                 pl.col(Column.GLOBAL_OPTIMAL_PRICE.value)
-                * pl.col(Column.EXPECTED_UNITS_SOLD.value)
+                * pl.col(Column.OPTIMAL_UNITS_SOLD.value)
             ).alias(Column.OPTIMAL_REVENUE.value),
         ]
     )
 
 
-def derive_all_metrics(df: pl.DataFrame) -> pl.DataFrame:
+def derive_all_metrics(df: pl.DataFrame, _round=True) -> pl.DataFrame:
     """
     Calculate all relevant metrics for a given DataFrame.
 
@@ -410,7 +415,7 @@ def derive_all_metrics(df: pl.DataFrame) -> pl.DataFrame:
         pl.DataFrame: A new DataFrame with the original data sorted by SKU and
         current price, along with additional columns for margin and revenue metrics.
     """
-    df = derive_volume_metrics(df)
+    df = derive_volume_metrics(df, _round=_round)
     df = derive_margin_metrics(df)
     df = derive_revenue_metrics(df)
     return df

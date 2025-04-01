@@ -13,6 +13,7 @@ from notebooks.price_cube.constants import (
     PRODUCT_CATALOG,
     PRODUCT_COSTS,
     PRODUCT_PRICE_RANGES,
+    ROUND,
     SEED,
 )
 from notebooks.price_cube.enums import Column
@@ -37,7 +38,7 @@ end_date = datetime(2024, 12, 31)
 
 category_list = list(CATEGORIES.keys())
 
-DATASET_PATH = os.path.join("notebooks", "price_cube", "dataset", "price_cube.parquet")
+DATASET_PATH = os.path.join("notebooks", "price_cube", "dataset", "price_cube")
 
 
 # Generate the dataset
@@ -83,11 +84,15 @@ df = pl.DataFrame(
     data,
 )
 
-df = derive_all_metrics(df).sort(pl.col(Column.DATE.value))
+df = derive_all_metrics(df, ROUND).sort(pl.col(Column.DATE.value))
 
-# Save to CSV if needed
+# Save to results
+
 df.write_parquet(
-    DATASET_PATH,
+    DATASET_PATH + ".parquet",
+)
+df.write_csv(
+    DATASET_PATH + ".csv",
 )
 
 

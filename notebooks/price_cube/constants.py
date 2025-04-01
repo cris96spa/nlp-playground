@@ -118,6 +118,24 @@ PRODUCT_PRICE_RANGES = {
     "BEAU003": (30.0, 60.0),  # Electric Toothbrush
 }
 
+PRODUCT_PRICE_RANGES_CONSTRAINTS = {
+    "ELEC001": (90.0, 110.0),  # Wireless Headphones
+    "ELEC002": (350.0, 420.0),  # Smartphone
+    "ELEC003": (110.0, 150.0),  # Smartwatch
+    "APP001": (35.0, 70.0),  # Denim Jeans
+    "APP002": (55.5, 100.0),  # Winter Jacket
+    "APP003": (49.99, 90.0),  # Running Shoes
+    "HOME001": (41.0, 50.0),  # Blender
+    "HOME002": (65.4, 115.0),  # Air Fryer
+    "HOME003": (52.0, 100.0),  # Cookware Set
+    "SPORT001": (24.0, 35.0),  # Yoga Mat
+    "SPORT002": (45.0, 86.0),  # Dumbbell Set
+    "SPORT003": (77.0, 123.0),  # Camping Tent
+    "BEAU001": (9.0, 14.0),  # Facial Cleanser
+    "BEAU002": (23.45, 37.0),  # Hair Dryer
+    "BEAU003": (33.2, 59.0),  # Electric Toothbrush
+}
+
 PRODUCT_COSTS = {
     "ELEC001": 81.0,  # Wireless Headphones
     "ELEC002": 290.0,  # Smartphone
@@ -154,20 +172,4 @@ MAX_UNITS_SOLD = {
     "BEAU003": 110,  # Electric Toothbrush
 }
 
-PRODUCT_PRICE_RANGES_CONSTRAINTS = {
-    "ELEC001": (80.0, 120.0),  # Wireless Headphones
-    "ELEC002": (300.0, 450.0),  # Smartphone
-    "ELEC003": (100.0, 180.0),  # Smartwatch
-    "APP001": (25.0, 70.0),  # Denim Jeans
-    "APP002": (50.5, 110.0),  # Winter Jacket
-    "APP003": (45.99, 90.0),  # Running Shoes
-    "HOME001": (41.0, 80.0),  # Blender
-    "HOME002": (60.4, 120.0),  # Air Fryer
-    "HOME003": (50.0, 100.0),  # Cookware Set
-    "SPORT001": (20.0, 35.0),  # Yoga Mat
-    "SPORT002": (30.0, 90.0),  # Dumbbell Set
-    "SPORT003": (67.0, 130.0),  # Camping Tent
-    "BEAU001": (7.0, 15.0),  # Facial Cleanser
-    "BEAU002": (23.45, 40.0),  # Hair Dryer
-    "BEAU003": (30.2, 60.0),  # Electric Toothbrush
-}
+ROUND = True
