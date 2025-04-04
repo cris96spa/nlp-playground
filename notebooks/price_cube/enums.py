@@ -111,3 +111,5 @@ class Column(BaseEnum):
     CURRENT_REVENUE = "current_revenue"
     EXPECTED_REVENUE_EXPECTED_VOLUME = "expected_revenue_expected_volume"
     OPTIMAL_REVENUE = "optimal_revenue"
+
+    COSTS = "costs"

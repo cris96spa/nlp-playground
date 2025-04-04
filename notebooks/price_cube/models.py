@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import BaseModel, Field
 
 
@@ -27,4 +29,36 @@ class ModalSkuData(BaseModel):
     )
     description: str = Field(
         description="Description of the product, including its features and benefits"
+    )
+
+
+class PricingOptimizationRecap(BaseModel):
+    current_revenue: float = Field(
+        description="Current revenue generated from product sales"
+    )
+    expected_revenue: float = Field(
+        description="Expected revenue based on current sales volume"
+    )
+    current_net_margin: float = Field(
+        description="Current net margin generated from product sales"
+    )
+    expected_net_margin: float = Field(
+        description="Expected net margin based on current sales volume"
+    )
+
+
+class DashboardPlots(BaseModel):
+    dates: list[datetime] = Field(description="Date of the data point")
+    costs: list[float] = Field(description="Cost values for the product over time")
+    current_revenue: list[float] = Field(
+        description="Current revenue generated from product sales"
+    )
+    expected_revenue: list[float] = Field(
+        description="Expected revenue based on current sales volume"
+    )
+    current_net_margin: list[float] = Field(
+        description="Current net margin generated from product sales"
+    )
+    expected_net_margin: list[float] = Field(
+        description="Expected net margin based on current sales volume"
     )
