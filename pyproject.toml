@@ -19,8 +19,8 @@ dependencies = [
     "polars>=1.23.0",
     "pydantic>=2.11.1",
     "scipy>=1.15.2",
+    "sentence-transformers>=4.0.2",
     "setuptools>=75.8.1",
-    "tensorflow>=2.19.0",
     "tqdm>=4.67.1",
     "wheel>=0.45.1",
 ]

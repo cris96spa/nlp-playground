@@ -1,0 +1,115 @@
+{
+    "distance": 1.6085595467989418,
+    "children": [
+      {
+        "distance": 1.3891858513247604,
+        "children": [
+          {
+            "distance": 1.1873062450502425,
+            "children": [
+              {
+                "name": "ELEC002"
+              },
+              {
+                "distance": 1.1545794878263063,
+                "children": [
+                  {
+                    "name": "HOME001"
+                  },
+                  {
+                    "name": "HOME002"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "distance": 1.210851910028301,
+            "children": [
+              {
+                "name": "BEAU003"
+              },
+              {
+                "distance": 1.1655503015472606,
+                "children": [
+                  {
+                    "name": "BEAU001"
+                  },
+                  {
+                    "name": "BEAU002"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "distance": 1.4906095802016102,
+        "children": [
+          {
+            "distance": 1.158168716148682,
+            "children": [
+              {
+                "name": "HOME003"
+              },
+              {
+                "name": "SPORT002"
+              }
+            ]
+          },
+          {
+            "distance": 1.4269710229631911,
+            "children": [
+              {
+                "distance": 1.07776336796576,
+                "children": [
+                  {
+                    "name": "APP002"
+                  },
+                  {
+                    "name": "SPORT003"
+                  }
+                ]
+              },
+              {
+                "distance": 1.2558984362385703,
+                "children": [
+                  {
+                    "distance": 1.1379516273908143,
+                    "children": [
+                      {
+                        "name": "ELEC003"
+                      },
+                      {
+                        "name": "SPORT001"
+                      }
+                    ]
+                  },
+                  {
+                    "distance": 1.2513974431486312,
+                    "children": [
+                      {
+                        "name": "APP001"
+                      },
+                      {
+                        "distance": 1.2142924358459726,
+                        "children": [
+                          {
+                            "name": "ELEC001"
+                          },
+                          {
+                            "name": "APP003"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
