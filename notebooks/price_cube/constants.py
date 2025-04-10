@@ -1,3 +1,5 @@
+import os
+
 from notebooks.price_cube.enums import Category, Column
 
 CATEGORIES = {
@@ -173,3 +175,20 @@ MAX_UNITS_SOLD = {
 }
 
 ROUND = True
+
+
+BASE_DIR = os.path.join("notebooks", "price_cube")
+DATASET_DIR = os.path.join(BASE_DIR, "dataset")
+JSON_DIR = os.path.join(BASE_DIR, "json")
+DATA_PATH = os.path.join(DATASET_DIR, "price_cube")
+PRODUCTS_PATH = os.path.join(DATASET_DIR, "products")
+
+PRICING_OPTIMIZATION_TABLE_JSON = os.path.join(
+    JSON_DIR, "pricing_optimization_table.json"
+)
+PRICING_OPTIMIZATION_RECAP_JSON = os.path.join(
+    JSON_DIR, "pricing_optimization_recap.json"
+)
+MODAL_SKU_DATA_JSON = os.path.join(JSON_DIR, "modal_sku_data.json")
+DASHBOARD_TABLE_JSON = os.path.join(JSON_DIR, "dashboard_table.json")
+DASHBOARD_PLOTS_JSON = os.path.join(JSON_DIR, "dashboard_plots.json")

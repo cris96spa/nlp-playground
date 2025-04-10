@@ -9,10 +9,12 @@ import polars as pl
 
 from notebooks.price_cube.constants import (
     CATEGORIES,
+    DATA_PATH,
     N_ROWS,
     PRODUCT_CATALOG,
     PRODUCT_COSTS,
     PRODUCT_PRICE_RANGES,
+    PRODUCTS_PATH,
     ROUND,
     SEED,
 )
@@ -37,8 +39,6 @@ end_date = datetime(2024, 12, 31)
 
 
 category_list = list(CATEGORIES.keys())
-
-DATASET_PATH = os.path.join("notebooks", "price_cube", "dataset", "price_cube")
 
 
 # Generate the dataset
@@ -89,12 +89,34 @@ df = derive_all_metrics(df, ROUND).sort(pl.col(Column.DATE.value))
 # Save to results
 
 df.write_parquet(
-    DATASET_PATH + ".parquet",
+    DATA_PATH + ".parquet",
 )
 df.write_csv(
-    DATASET_PATH + ".csv",
+    DATA_PATH + ".csv",
 )
 
 
 # Preview
 print(df.head())
+
+
+products_df = (
+    df.select(
+        [
+            pl.col(Column.SKU.value),
+            pl.col(Column.PRODUCT_NAME.value),
+            pl.col(Column.PRODUCT_CATEGORY.value),
+            pl.col(Column.UNIT_COST.value),
+            pl.col(Column.PRODUCT_DESCRIPTION.value),
+        ]
+    )
+    .unique()
+    .sort(pl.col(Column.PRODUCT_NAME.value))
+)
+
+products_df.write_parquet(
+    PRODUCTS_PATH + ".parquet",
+)
+products_df.write_csv(
+    PRODUCTS_PATH + ".csv",
+)

@@ -62,3 +62,29 @@ class DashboardPlots(BaseModel):
     expected_net_margin: list[float] = Field(
         description="Expected net margin based on current sales volume"
     )
+    units_sold: list[float] = Field(description="Units sold for the product over time")
+    expected_units_sold: list[float] = Field(
+        description="Expected units sold based on current sales volume"
+    )
+    current_margin_percentage: list[float] = Field(
+        description="Net margin percentage for the product over time"
+    )
+    expected_margin_percentage: list[float] = Field(
+        description="Expected net margin percentage based on current sales volume"
+    )
+
+
+class Product(BaseModel):
+    sku: str = Field(description="Stock Keeping Unit (SKU) of the product")
+    product_name: str = Field(
+        description="Name of the product, including its features and benefits"
+    )
+    product_description: str = Field(
+        description="Description of the product, including its features and benefits"
+    )
+    product_category: str = Field(
+        description="Category of the product, including its features and benefits"
+    )
+    unit_cost: float = Field(
+        description="Cost per unit of the product, including its features and benefits"
+    )

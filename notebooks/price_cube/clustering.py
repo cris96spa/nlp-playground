@@ -1,105 +1,113 @@
 import json
 
 import matplotlib.pyplot as plt
+import polars as pl
 from scipy.cluster.hierarchy import dendrogram, linkage, to_tree
 from sentence_transformers import SentenceTransformer
+
+from notebooks.price_cube.constants import PRODUCTS_PATH
+from notebooks.price_cube.enums import Column
+from notebooks.price_cube.models import Product
 
 # Define the products list, including product id, name, description, and category.
 products = [
     {
-        "id": "ELEC001",
+        "sku": "ELEC001",
         "name": "Wireless Headphones",
         "description": "Premium over-ear headphones with active noise cancellation, deep bass, and Bluetooth 5.0 for seamless wireless audio.",
         "category": "ELECTRONICS",
     },
     {
-        "id": "ELEC002",
+        "sku": "ELEC002",
         "name": "Smartphone",
         "description": "Cutting-edge smartphone featuring a 6.5-inch OLED display, ultra-fast processor, and 128GB of storage for all your apps and media.",
         "category": "ELECTRONICS",
     },
     {
-        "id": "ELEC003",
+        "sku": "ELEC003",
         "name": "Smartwatch",
         "description": "Stylish fitness smartwatch with built-in heart rate monitor, GPS tracking, sleep analysis, and water-resistant design.",
         "category": "ELECTRONICS",
     },
     {
-        "id": "APP001",
+        "sku": "APP001",
         "name": "Denim Jeans",
         "description": "Classic-fit denim jeans crafted from a stretchable cotton blend, offering comfort, durability, and timeless style.",
         "category": "APPAREL",
     },
     {
-        "id": "APP002",
+        "sku": "APP002",
         "name": "Winter Jacket",
         "description": "Heavy-duty insulated winter jacket with fleece lining, windproof shell, and adjustable hood for superior cold protection.",
         "category": "APPAREL",
     },
     {
-        "id": "APP003",
+        "sku": "APP003",
         "name": "Running Shoes",
         "description": "Ultra-lightweight running shoes with cushioned soles, breathable mesh upper, and shock-absorbing design for peak performance.",
         "category": "APPAREL",
     },
     {
-        "id": "HOME001",
+        "sku": "HOME001",
         "name": "Blender",
         "description": "High-powered blender with stainless steel blades, multiple speed settings, and a durable glass jar for smoothies, soups, and more.",
         "category": "HOME_KITCHEN",
     },
     {
-        "id": "HOME002",
+        "sku": "HOME002",
         "name": "Air Fryer",
         "description": "Digital air fryer with rapid hot air circulation, touchscreen controls, and 5L capacity for healthy, oil-free cooking.",
         "category": "HOME_KITCHEN",
     },
     {
-        "id": "HOME003",
+        "sku": "HOME003",
         "name": "Cookware Set",
         "description": "Comprehensive 10-piece non-stick cookware set with ergonomic handles and even heat distribution, suitable for all stovetops.",
         "category": "HOME_KITCHEN",
     },
     {
-        "id": "SPORT001",
+        "sku": "SPORT001",
         "name": "Yoga Mat",
         "description": "Eco-friendly, high-density yoga mat with anti-slip surface, optimal cushioning, and a carry strap for easy transport.",
         "category": "SPORTS_OUTDOORS",
     },
     {
-        "id": "SPORT002",
+        "sku": "SPORT002",
         "name": "Dumbbell Set",
         "description": "Versatile adjustable dumbbell set with ergonomic grips and multiple weight options for effective strength training at home.",
         "category": "SPORTS_OUTDOORS",
     },
     {
-        "id": "SPORT003",
+        "sku": "SPORT003",
         "name": "Camping Tent",
         "description": "Compact waterproof 2-person tent with quick setup, breathable mesh panels, and durable weather-resistant materials.",
         "category": "SPORTS_OUTDOORS",
     },
     {
-        "id": "BEAU001",
+        "sku": "BEAU001",
         "name": "Facial Cleanser",
         "description": "Gentle daily foaming cleanser enriched with aloe vera and vitamin E, designed to remove impurities without drying the skin.",
         "category": "BEAUTY_HEALTH",
     },
     {
-        "id": "BEAU002",
+        "sku": "BEAU002",
         "name": "Hair Dryer",
         "description": "Professional-grade ionic hair dryer with multiple heat and speed settings, cool shot feature, and diffuser for salon-quality results.",
         "category": "BEAUTY_HEALTH",
     },
     {
-        "id": "BEAU003",
+        "sku": "BEAU003",
         "name": "Electric Toothbrush",
         "description": "Rechargeable electric toothbrush with smart timer, 3 brushing modes, and long-lasting battery for superior oral hygiene.",
         "category": "BEAUTY_HEALTH",
     },
 ]
 
+df = pl.read_csv(PRODUCTS_PATH).sort(Column.PRODUCT_NAME.value)
+products = df.to_dicts()
+products = [Product.model_validate(p) for p in products]
 # Extract descriptions for embedding.
-descriptions = [p["description"] for p in products]
+descriptions = [p.product_description for p in products]
 
 # Load a pre-trained Hugging Face embedder using SentenceTransformer.
 # Here we use 'all-MiniLM-L6-v2' - adjust to any model available on Hugging Face.
@@ -108,8 +116,6 @@ embeddings = model.encode(descriptions, convert_to_tensor=False)  # returns nump
 
 # Perform hierarchical clustering using Ward's method.
 Z = linkage(embeddings, method="ward")
-
-from scipy.cluster.hierarchy import ClusterNode
 
 
 # Recursive helper to build a nested JSON tree from the clustering result.
@@ -127,7 +133,7 @@ def build_tree(node, labels):
 
 
 # Create labels using product IDs.
-labels = [p["id"] for p in products]
+labels = [p.sku for p in products]
 root, _ = to_tree(Z, rd=True)
 json_tree = build_tree(root, labels)
 

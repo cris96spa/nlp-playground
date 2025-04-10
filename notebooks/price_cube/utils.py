@@ -337,7 +337,7 @@ def derive_margin_metrics(df: pl.DataFrame) -> pl.DataFrame:
             (
                 (pl.col(Column.SUGGESTED_PRICE.value) - pl.col(Column.UNIT_COST.value))
                 / pl.col(Column.UNIT_COST.value)
-            ).alias(Column.SUGGESTED_MARGIN_PERCENTAGE.value),
+            ).alias(Column.EXPECTED_MARGIN_PERCENTAGE.value),
             (
                 (
                     pl.col(Column.GLOBAL_OPTIMAL_PRICE.value)
@@ -419,3 +419,28 @@ def derive_all_metrics(df: pl.DataFrame, _round=True) -> pl.DataFrame:
     df = derive_margin_metrics(df)
     df = derive_revenue_metrics(df)
     return df
+
+
+def to_snake_case(s: str) -> str:
+    """
+    Convert a string to snake_case.
+
+    Args:
+        s (str): The input string to convert.
+
+    Returns:
+        str: The converted string in snake_case.
+    """
+    return "_".join(s.lower().split())
+
+
+def to_camel_case(s: str) -> str:
+    """
+    Convert a string to camelCase.
+    Args:
+        s (str): The input string to convert.
+    Returns:
+        str: The converted string in camelCase.
+    """
+    parts = s.split("_")
+    return parts[0] + "".join(word.capitalize() for word in parts[1:])

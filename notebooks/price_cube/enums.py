@@ -101,7 +101,7 @@ class Column(BaseEnum):
     OPTIMAL_UNITS_SOLD = "optimal_units_sold"
 
     CURRENT_MARGIN_PERCENTAGE = "current_margin_percentage"
-    SUGGESTED_MARGIN_PERCENTAGE = "suggested_margin_percentage"
+    EXPECTED_MARGIN_PERCENTAGE = "expected_margin_percentage"
     OPTIMAL_MARGIN_PERCENTAGE = "optimal_margin_percentage"
 
     CURRENT_NET_MARGIN = "current_net_margin"
